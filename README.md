@@ -1,2 +1,3 @@
 # cityu_file
-this is a repository including the quiz、file、homework of cityu(dg) computer science
+This is a repository including the quizzes, files, and homework materials for CityU (DG) Computer Science.
+If you have any question, plz contact me via wechat by searching my name
