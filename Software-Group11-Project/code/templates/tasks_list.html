@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}All Tasks{% endblock %}
+{% block header %}All Tasks{% endblock %}
+{% block header_button %}
+<a href="/tickets/admin"><button>Return to Admin Panel</button></a>
+{% endblock %}
+
+{% block content %}
+<div class="center-section">
+    <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width:80%; margin:0 auto;">
+        <tr style="background: #4a90e2; color:white;">
+            <th>ID</th>
+            <th>Title</th>
+            <th>Assigned To</th>
+            <th>Priority</th>
+            <th>Actions</th>
+        </tr>
+        {% for t in tasks %}
+        <tr>
+            <td>{{ t.id }}</td>
+            <td>{{ t.title }}</td>
+            <td>{{ t.assigned_to }}</td>
+            <td>
+                {% if t.priority == 1 %}
+                    <span style="color:red;">{{ t.priority }}</span>
+                {% elif t.priority == 2 %}
+                    <span style="color:orange;">{{ t.priority }}</span>
+                {% else %}
+                    {{ t.priority }}
+                {% endif %}
+            </td>
+            <td>
+                <button type="button" onclick="adminAction('delete', {{ t.id }}, this)">Delete</button>
+                <button type="button" onclick="adminAction('change_priority', {{ t.id }}, this)">Change Priority</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<script>
+function adminAction(action, task_id, btn){
+    fetch(`/tickets/admin/${action === 'change_priority' ? 'change_priority' : 'delete_task'}/${task_id}`)
+    .then(r => r.json())
+    .then(data => {
+        if(data.success){
+            location.reload();
+        } else {
+            alert("Action failed");
+        }
+    })
+    .catch(err => alert("Request error: " + err));
+}
+</script>
+{% endblock %}

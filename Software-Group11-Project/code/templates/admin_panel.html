@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Admin{% endblock %}
+{% block header %}Admin Panel{% endblock %}
+{% block header_button %}
+<a href="/"><button>Return to Coding Test</button></a>
+{% endblock %}
+
+{% block content %}
+<div class="center-section">
+
+    <!-- 创建用户 -->
+    <h2>Create User</h2>
+    <form id="createUserForm">
+        <input name="username" id="username" placeholder="New username">
+        <button type="button" onclick="createUser()">Submit</button>
+    </form>
+
+    <!-- 分配任务 -->
+    <h2>Assign Task</h2>
+    <form id="assignTaskForm">
+        <input name="title" id="taskTitle" placeholder="Task title">
+        <select name="assigned_to" id="assignedTo">
+            {% for u in users %}
+            <option value="{{u}}">{{u}}</option>
+            {% endfor %}
+        </select>
+        <select name="priority" id="taskPriority">
+            <option value="1">Low</option>
+            <option value="2">Medium</option>
+            <option value="3">High</option>
+        </select>
+        <button type="button" onclick="assignTask()">Submit Assignment</button>
+    </form>
+
+    <br>
+    <a href="/tickets/admin/tasks"><button>All Tasks</button></a>
+    <a href="/tickets/admin/requests"><button>User Requests</button></a>
+</div>
+
+<script>
+/* ---------------- 创建用户 ---------------- */
+function createUser() {
+    const username = document.getElementById('username').value.trim();
+    if (!username) return alert('Username required');
+
+    fetch('/tickets/admin/create_user', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username})
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) location.reload();
+        else alert('Failed to create user');
+    })
+    .catch(err => alert('Request error: ' + err));
+}
+
+/* ---------------- 分配任务 ---------------- */
+function assignTask() {
+    const title = document.getElementById('taskTitle').value.trim();
+    const assigned_to = document.getElementById('assignedTo').value;
+    const priority = document.getElementById('taskPriority').value;
+    if (!title) return alert('Task title required');
+
+    fetch('/tickets/admin/add_task', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({title, assigned_to, priority})
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) location.reload();
+        else alert('Failed to assign task');
+    })
+    .catch(err => alert('Request error: ' + err));
+}
+</script>
+{% endblock %}

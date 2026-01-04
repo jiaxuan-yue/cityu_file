@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}User Requests{% endblock %}
+{% block header %}User Requests{% endblock %}
+{% block header_button %}
+<a href="/tickets/admin"><button>Return to Admin Panel</button></a>
+{% endblock %}
+
+{% block content %}
+<div class="center-section">
+    <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width:80%; margin:0 auto;">
+        <tr style="background: #4a90e2; color:white;">
+            <th>ID</th>
+            <th>User</th>
+            <th>Task ID</th>
+            <th>Type</th>
+            <th>Action</th>
+        </tr>
+        {% for r in reqs %}
+        <tr>
+            <td>{{ r.id }}</td>
+            <td>{{ r.username }}</td>
+            <td>{{ r.task_id }}</td>
+            <td>{{ r.request_type }}</td>
+            <td>
+                <button type="button" onclick="handleRequest({{ r.id }}, this)">Handled</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<script>
+function handleRequest(req_id, btn){
+    fetch(`/tickets/admin/handle_request/${req_id}`)
+    .then(r => r.json())
+    .then(data => {
+        if(data.success){
+            location.reload();
+        } else {
+            alert("Action failed");
+        }
+    })
+    .catch(err => alert("Request error: " + err));
+}
+</script>
+{% endblock %}

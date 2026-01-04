@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "title": "Code Analysis",
+        "assigned_to": "Amy",
+        "priority": 1
+    },
+    {
+        "id": 2,
+        "title": "Basic RAG implement",
+        "assigned_to": "Amy",
+        "priority": 3
+    },
+    {
+        "id": 4,
+        "title": "LLM lightweight fine- tuning",
+        "assigned_to": "Alice",
+        "priority": 1
+    }
+]

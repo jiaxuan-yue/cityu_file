@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}IT Ticket System{% endblock %}
+{% block header %}IT Ticket System{% endblock %}
+
+{% block content %}
+<div class="center-section">
+    <h2>Select Your Role to Enter the System</h2>
+
+    <div style="margin-bottom:20px;">
+        <a href="/tickets/admin"><button>Admin Portal</button></a>
+        <p>Admins can create users, assign tasks, and review requests.</p>
+    </div>
+
+    <div style="border: 1px solid #4a90e2; padding:20px; border-radius:10px; display:inline-block;">
+        <h3>User Portal</h3>
+        <p>Please select a username to enter the task panel.</p>
+        <form action="/tickets/user/" method="get" onsubmit="
+            const user = document.getElementById('username').value;
+            this.action = '/tickets/user/' + user;
+        ">
+            <select id="username">
+                {% for u in users %}
+                <option value="{{u}}">{{u}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Enter</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
